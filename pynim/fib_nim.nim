@@ -13,4 +13,4 @@ when isMainModule:
   let elapsed = (epochtime() - start).round(2)
   stderr.writeLine(&"Nim Computed fib({x})={res} in {elapsed} seconds")
 
-#nim c -d:release --app:lib --gc:regions --out:fib_nimpy.so fib_nim.nim
+#nim c -d:release --app:lib --gc:regions --out:fib_nim.so fib_nim.nim

@@ -1,5 +1,5 @@
 import time
-from fib_nimpy import fib as fib_nim
+from fib_nim import fib as fib_nim
 
 def fib(n):
     if n <= 2:
