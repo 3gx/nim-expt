@@ -17,4 +17,4 @@ if __name__ == "__main__":
     start = time.time()
     res = fib_nim(x)
     elapsed = time.time() - start
-    print(f"Nim computed fib({x})={res} in {elapsed:3f} seconds")
+    print(f"Python+Nim computed fib({x})={res} in {elapsed:3f} seconds")
