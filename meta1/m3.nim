@@ -1,6 +1,6 @@
 import locks
 
-template withLock(lock: Lock, body: untyped) =
+template withLock(lock: Lock, body: typed) =
   acquire lock
   try:
     body
