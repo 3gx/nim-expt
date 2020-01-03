@@ -1,4 +1,5 @@
 import time
+from fib_nimpy import fib as fib_nim
 
 def fib(n):
     if n <= 2:
@@ -7,8 +8,13 @@ def fib(n):
         return fib(n-1) + fib(n-2)
 
 if __name__ == "__main__":
-    x = 36
+    x = 38
     start = time.time()
     res = fib(x)
     elapsed = time.time() - start
-    print(f"Py3 computed fib({x})={res} in {elapsed:3f} seconds")
+    print(f"Python computed fib({x})={res} in {elapsed:3f} seconds")
+
+    start = time.time()
+    res = fib_nim(x)
+    elapsed = time.time() - start
+    print(f"Nim computed fib({x})={res} in {elapsed:3f} seconds")
