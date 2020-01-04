@@ -5,7 +5,7 @@ macro curry(fn: untyped): untyped =
   # assert that we expect procDef 
   fn.expectKind nnkProcDef
 
-  if dump:  echo treeRepr(fn)
+  #if dump:  echo treeRepr(fn)
 
   # proc return type
   let ret_ty = fn.params[0]
@@ -23,15 +23,23 @@ macro curry(fn: untyped): untyped =
     echo map(params_seq,
         proc(p: auto):auto = (p.ty.repr, p.name.repr, p.dflt.repr))
 
-  quote do:
-    `fn`
+  let p = params_seq[^1]
+  let nm = p.name
+  let ty = p.ty
+  let fbody = fn.body
+  let last =
+    quote do:
+      let tmp = proc(`nm` : `ty`): auto = `fbody`
+  echo treeRepr(last)
+  fn
+
 
 proc fun(x,y:int , z:int = 5):int {.curry.} =
   result = x+y*z
 
-#proc cfun(x:int): auto =
-#  return proc (y:int): auto =
-#    return proc (z: int): auto = fun(x,y,z)
+let t1 = proc(x:int): auto =
+  return proc (y:int): auto =
+    return proc (z: int): auto = fun(x,y,z)
 
 let t = proc(x:int): int = x*2
 

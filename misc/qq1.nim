@@ -1,6 +1,7 @@
 import macros
 
 macro check(ex: untyped) =
+  echo treeRepr(ex)
   # this is a simplified version of the check macro from the
   # unittest module.
 
