@@ -1,14 +1,27 @@
-import macros
+import macros, sequtils, sugar
 
 macro curry(fn: untyped): untyped =
   fn.expectKind nnkProcDef
-  fn.name= newIdentNode("xyz")
-#  echo lispRepr(fn[0], indented=true)
-#  result = fn
+  echo treeRepr(fn)
+  # parameter map
+  var params_seq = newSeq[tuple[ty, name, dflt: NimNode]]()
+  let ret_ty = fn.params[0]
+  echo "ret_ty: ", treeRepr(ret_ty)
+
+  for p in fn.params[1..<fn.params.len]:
+    p.expectKind nnkIdentDefs
+    let dflt_val = p[^1]
+    let param_ty = p[^2]
+    for param_name in p[0..<p.len-2]:
+      params_seq.add((param_ty, param_name, dflt_val))
+
+  echo map(params_seq,
+      proc(p: auto):auto = (p.ty.repr, p.name.repr, p.dflt.repr))
+
   quote do:
     `fn`
 
-proc fun(x,y,z:int):int {.curry.} =
+proc fun(x,y:int , z:int = 5):int {.curry.} =
   result = x+y*z
 
 #proc cfun(x:int): auto =
@@ -26,8 +39,11 @@ proc map(str: string, fun: proc (x:char) : char): string =
     result &= fun(c)
 
 
-dumpAstGen:
-  proc hello() =
-    echo "hi"
+#dumpAstGen:
+#  proc hello() =
+#    echo "hi"
+#echo xyz(3,4,5)
+#
+let a = @[1, 2, 3, 4]
+let b = map(a, proc (x: auto):auto =  $x)
 
-echo xyz(3,4,5)
