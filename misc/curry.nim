@@ -16,7 +16,7 @@ macro curry(fn: untyped): untyped =
     p.expectKind nnkIdentDefs
     let dflt_val = p[^1]
     let param_ty = p[^2]
-    for param_name in p[0..<p.len-2]:
+    for param_name in p[0..^3]:
       params_seq.add((param_ty, param_name, dflt_val))
 
   if dump:
