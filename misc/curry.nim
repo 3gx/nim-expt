@@ -1,13 +1,17 @@
 import macros, sequtils, sugar
 
 macro curry(fn: untyped): untyped =
+  const dump= true
+  # assert that we expect procDef 
   fn.expectKind nnkProcDef
-  echo treeRepr(fn)
-  # parameter map
-  var params_seq = newSeq[tuple[ty, name, dflt: NimNode]]()
-  let ret_ty = fn.params[0]
-  echo "ret_ty: ", treeRepr(ret_ty)
 
+  if dump:  echo treeRepr(fn)
+
+  # proc return type
+  let ret_ty = fn.params[0]
+
+  # extract parameter map
+  var params_seq = newSeq[tuple[ty, name, dflt: NimNode]]()
   for p in fn.params[1..<fn.params.len]:
     p.expectKind nnkIdentDefs
     let dflt_val = p[^1]
@@ -15,8 +19,9 @@ macro curry(fn: untyped): untyped =
     for param_name in p[0..<p.len-2]:
       params_seq.add((param_ty, param_name, dflt_val))
 
-  echo map(params_seq,
-      proc(p: auto):auto = (p.ty.repr, p.name.repr, p.dflt.repr))
+  if dump:
+    echo map(params_seq,
+        proc(p: auto):auto = (p.ty.repr, p.name.repr, p.dflt.repr))
 
   quote do:
     `fn`
@@ -32,7 +37,7 @@ let t = proc(x:int): int = x*2
 
 #echo cfun(3)(4)(5)
 #dumpLisp:
-#  let t = proc(x:int): int = x*2
+#  proc xxx(x,y:int, z:int): int = x*2
 
 proc map(str: string, fun: proc (x:char) : char): string =
   for c in str:
