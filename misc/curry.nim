@@ -36,6 +36,7 @@ macro curry_impl(dump: static[bool] = true, fn: untyped): untyped =
         dec(i)
 
   var fn1 = fn.body
+  echo "lineinfo: ", fn1.lineinfo
   for p in reverse(params_seq[0..^1]):
     # XXX: WAR for https://github.com/nim-lang/Nim/issues/7726
     let
