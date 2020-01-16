@@ -11,8 +11,10 @@ macro edges(head, body:untyped): untyped =
   for n in body:
     if n.kind == nnkInfix and $n[0] == "->":
       result.add getAst(adder(head, n[1], n[2]))
-  echo head.treeRepr
-  echo body.treeRepr
+  let ast = getAst(adder("graph","src","dst"))
+  echo ast.treeRepr
+#  echo head.treeRepr
+#  echo body.treeRepr
 
 proc buildGraph(): seq[Edge] =
   result = newSeq[Edge]()
