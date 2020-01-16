@@ -12,6 +12,6 @@ macro eval1(fun: untyped): untyped  =
   echo e.treeRepr
 
 
-proc stmt1(x : Int): int {.eval1.}=
+proc stmt1 {.eval1.}=
   2*x
 
